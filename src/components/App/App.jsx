@@ -22,8 +22,6 @@ const App = () => {
     if (error) toast.error(error);
   }, [error]);
 
-  console.log(error);
-
   return (
     <div>
       <Container>
