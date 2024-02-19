@@ -1,16 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createContact, getContacts, removeContact } from './operations';
-import { getActionRoute } from 'utils/getActionRoute';
-
-// const isLoadingHandler = (state, action) => {
-//   const actionRoute = getActionRoute(action.type);
-//   state.isLoading[actionRoute] = true;
-// };
-
-// const errorHandler = (state, { payload }) => {
-//   state.isLoading = false;
-//   state.error = payload;
-// };
 
 const initialState = {
   items: [],
