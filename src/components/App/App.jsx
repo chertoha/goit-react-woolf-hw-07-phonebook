@@ -5,14 +5,16 @@ import Contacts from 'components/Contacts';
 import 'react-toastify/dist/ReactToastify.css';
 import { MainHeading } from './App.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectError } from '../../redux/selectors';
+import { selectError, selectIsLoading } from '../../redux/selectors';
 import { useEffect } from 'react';
 import { getContacts } from '../../redux/contacts/operations';
 import { ToastContainer, toast } from 'react-toastify';
+import Loader from 'components/Loader';
 
 const App = () => {
   const dispatch = useDispatch();
   const error = useSelector(selectError);
+  const isLoading = useSelector(selectIsLoading);
 
   useEffect(() => {
     dispatch(getContacts());
@@ -35,6 +37,7 @@ const App = () => {
         <Contacts />
       </Container>
       <ToastContainer />
+      {isLoading && <Loader />}
     </div>
   );
 };

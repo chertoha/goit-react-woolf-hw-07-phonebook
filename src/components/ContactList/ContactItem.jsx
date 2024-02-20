@@ -10,13 +10,10 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { removeContact } from '../../redux/contacts/operations';
 import { selectIsLoading } from '../../redux/selectors';
-import Loader from 'components/Loader';
-import { useRef } from 'react';
 
 const ContactItem = ({ id, name, phone }) => {
   const dispatch = useDispatch();
-  const currentButtonRef = useRef(false);
-  const { removing } = useSelector(selectIsLoading);
+  const isLoading = useSelector(selectIsLoading);
 
   return (
     <CardWrapper>
@@ -27,15 +24,12 @@ const ContactItem = ({ id, name, phone }) => {
 
       <Delete
         type="button"
+        disabled={isLoading}
         onClick={() => {
           dispatch(removeContact(id));
-          currentButtonRef.current = true;
         }}
       >
-        <ButtonTextWrapper>
-          Delete
-          {removing && currentButtonRef.current && <Loader size={12} />}
-        </ButtonTextWrapper>
+        <ButtonTextWrapper>Delete</ButtonTextWrapper>
       </Delete>
     </CardWrapper>
   );

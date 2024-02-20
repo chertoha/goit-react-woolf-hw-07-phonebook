@@ -3,12 +3,17 @@ import { createContact, getContacts, removeContact } from './operations';
 
 const initialState = {
   items: [],
-  isLoading: {
-    fetching: false,
-    creating: false,
-    removing: false,
-  },
+  isLoading: false,
   error: null,
+};
+
+const isLoadingHandler = state => {
+  state.isLoading = true;
+};
+
+const errorHandler = (state, action) => {
+  state.error = action.payload;
+  state.isLoading = false;
 };
 
 export const contactsSlice = createSlice({
@@ -18,41 +23,26 @@ export const contactsSlice = createSlice({
 
   extraReducers: builder => {
     builder
-      .addCase(getContacts.pending, state => {
-        state.isLoading.fetching = true;
-      })
-      .addCase(getContacts.rejected, (state, { payload }) => {
-        state.isLoading.fetching = false;
-        state.error = payload;
-      })
+      .addCase(getContacts.pending, isLoadingHandler)
+      .addCase(getContacts.rejected, errorHandler)
       .addCase(getContacts.fulfilled, (state, { payload }) => {
         state.items = payload;
         state.error = null;
-        state.isLoading.fetching = false;
+        state.isLoading = false;
       })
-      .addCase(createContact.pending, state => {
-        state.isLoading.creating = true;
-      })
-      .addCase(createContact.rejected, (state, { payload }) => {
-        state.isLoading.creating = false;
-        state.error = payload;
-      })
+      .addCase(createContact.pending, isLoadingHandler)
+      .addCase(createContact.rejected, errorHandler)
       .addCase(createContact.fulfilled, (state, { payload }) => {
         state.items.push(payload);
         state.error = null;
-        state.isLoading.creating = false;
+        state.isLoading = false;
       })
-      .addCase(removeContact.pending, state => {
-        state.isLoading.removing = true;
-      })
-      .addCase(removeContact.rejected, (state, { payload }) => {
-        state.isLoading.removing = false;
-        state.error = payload;
-      })
+      .addCase(removeContact.pending, isLoadingHandler)
+      .addCase(removeContact.rejected, errorHandler)
       .addCase(removeContact.fulfilled, (state, { payload }) => {
         state.items = state.items.filter(({ id }) => id !== payload.id);
         state.error = null;
-        state.isLoading.removing = false;
+        state.isLoading = false;
       });
   },
 });

@@ -11,14 +11,13 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { selectContacts, selectIsLoading } from '../../redux/selectors';
 import { createContact } from '../../redux/contacts/operations';
-import Loader from 'components/Loader';
 
 const ContactForm = () => {
   const [name, setName] = useState('');
   const [tel, setTel] = useState('');
 
   const contacts = useSelector(selectContacts);
-  const { creating } = useSelector(selectIsLoading);
+  const isLoading = useSelector(selectIsLoading);
   const dispatch = useDispatch();
 
   const onSubmitHandler = e => {
@@ -69,15 +68,8 @@ const ContactForm = () => {
         </Label>
       </FieldWrapper>
 
-      <Submit type="submit">
-        <ButtonTextWrapper>
-          Add contact
-          {creating && (
-            <ButtonTextWrapper>
-              <Loader />
-            </ButtonTextWrapper>
-          )}
-        </ButtonTextWrapper>
+      <Submit type="submit" disabled={isLoading}>
+        <ButtonTextWrapper>Add contact</ButtonTextWrapper>
       </Submit>
     </Form>
   );
